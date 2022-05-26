@@ -69,7 +69,7 @@ function cadastro(){
     entregas.concat(clienteNovo)
 
     clienteNovo = resultados
-    clienteNovo[{nomeRecebido,produtoRecebido}].push(resultados.copy())
+    resultados.push(clienteNovo[{nomeRecebido,produtoRecebido}])
     console.log(resultados)
     
         
