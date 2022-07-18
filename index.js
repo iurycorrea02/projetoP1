@@ -1,8 +1,10 @@
+const validaCpf = require('./ValidaCpf');
 const prompt = require('prompt-sync')();
 clienteNovo = {}
 sergipe = ['Sara']
 entregas = [{ 
                 nome:'Marcos',
+                cpf: '297.574.610-59',
                 produto:'tomada',
                 saida:'MG',
                 chegada:'Pará', 
@@ -10,6 +12,7 @@ entregas = [{
             },
             {
                 nome:'Sara', 
+                cpf: '077.057.920-52',
                 produto:'lenço',
                 saida:'Sergipe',
                 chegada:'Piauí', 
@@ -17,6 +20,7 @@ entregas = [{
             },
             {
                 nome:'Valéria', 
+                cpf: '594.850.400-08',
                 produto:'chuveiro',
                 saida:'Acre',
                 chegada:'Paraíba', 
@@ -61,8 +65,16 @@ function cadastrarEntrega(){
     console.clear()
     linhas('CADASTRO DE ENTREGAS')
     console.log()
-
     clienteNovo['nome'] = prompt('Nome: ')
+    let cpfDigitado = prompt('CPF: ')
+
+    const cpfInstanciado = new validaCpf(cpfDigitado)
+    if (cpfInstanciado.valida()) clienteNovo['cpf'] = cpfDigitado
+    else {
+        syncDelay(2000,'CPF inválido, cadastre novamente!')
+        cadastrarEntrega()
+    }
+
     clienteNovo['produto'] = prompt('Produto: ')
     clienteNovo['saida'] = prompt('Estado de saida: ')
     clienteNovo['chegada'] = prompt('Estado de chegada: ')
@@ -111,7 +123,6 @@ function excluirEntrega() {
     console.log()
     let opcao = Number(prompt('Digite o código da entrega que você quer excluir ou [0] para voltar ao Menu inicial: '))
     while(true) {
-        /*-----------------Melhorar a busca--------------------*/
         if (opcao === 0) {
             console.clear()
             syncDelay(1000,'Redirecionando...')
@@ -147,11 +158,11 @@ function pesquisarEntrega() {
         else if (op === 1){
             syncDelay(1000,'Checando...')
             console.clear()
-            console.log('nome | produto | saída | chegada | preço')
+            console.log('nome    |     cpf      |   produto | saída | chegada | preço')
             console.log()
             
             for (i of entregas){
-                console.log(`${i.nome}   |   ${i.produto}   |   ${i.saida}   |   ${i.chegada}   |   ${i.preco}`)
+                console.log(`${i.nome}   |   ${i.cpf}   |   ${i.produto}   |   ${i.saida}   |   ${i.chegada}   |   ${i.preco}`)
             }
             return menu()
         } 
@@ -177,9 +188,9 @@ function pesquisarEntrega() {
             else if (filtraNome.length >= 1) {
                 num = 1
                 console.clear()
-                console.log('cod | nome  | produto | saída | chegada | preço')
+                console.log('cod | nome  |  cpf  | produto | saída | chegada | preço')
                 for (i of filtraNome) {
-                    console.log(`${num} | ${i.nome} | ${i.produto} | ${i.saida} | ${i.chegada} | ${i.preco}`)
+                    console.log(`${num} | ${i.nome} | ${i.cpf} | ${i.produto} | ${i.saida} | ${i.chegada} | ${i.preco}`)
                     num++
                 }
             }
